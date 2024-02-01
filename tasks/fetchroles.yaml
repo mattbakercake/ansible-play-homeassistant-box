@@ -1,0 +1,26 @@
+- name: fetch roles from git to local ansible instance
+  become: true
+  ansible.builtin.git:
+    repo: '{{ git_url }}/{{ role_name }}.git'
+    dest: roles/{{ role_name }}
+    version: master
+    clone: yes
+  environment:
+    GIT_TERMINAL_PROMPT: 0 # reports "terminal prompts disabled" on missing password
+  delegate_to: localhost
+  loop: "{{ required_roles }}"
+  loop_control:
+    loop_var: role_name
+
+- name: change ownership of roles to local ansible user
+  become: true
+  file:
+    path: "roles/{{ role_name }}" # this should be as same as `dest` above
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    state: directory
+    recurse: yes
+  delegate_to: localhost
+  loop: "{{ required_roles }}"
+  loop_control:
+    loop_var: role_name

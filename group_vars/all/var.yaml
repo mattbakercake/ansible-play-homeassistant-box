@@ -1,0 +1,22 @@
+ansible_user: admin
+
+host: "{{ inventory_hostname }}"
+
+cert_length_days: 3650
+
+mqtt_host: "{{ host }}"
+mqtt_listener_port: 8883
+mqtt_user: "{{ admin_username }}"
+mqtt_password: "{{ admin_password }}"
+
+zigbee_serial_device_port:
+
+git_url: https://github.com/mattbakercake
+
+required_roles:
+ - ansible-role-self-signed-cert
+ - ansible-role-install-docker
+ - ansible-role-container-homeassistant
+ - ansible-role-container-mosquitto
+ - ansible-role-container-nodered
+ - ansible-role-container-zigbee2mqtt

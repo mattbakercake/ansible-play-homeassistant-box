@@ -1,0 +1,13 @@
+- name: Set up homeassistant server
+  hosts: homeassistant
+
+  pre_tasks:
+  - import_tasks: tasks/fetchroles.yaml
+
+  tasks:
+    - name: loop through required roles
+      ansible.builtin.include_role:
+        name: '{{ current_role }}'
+      loop: '{{ required_roles }}'
+      loop_control:
+        loop_var: current_role
