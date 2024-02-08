@@ -1,5 +1,3 @@
-ansible_user: admin
-
 host: "{{ inventory_hostname }}"
 
 cert_length_days: 3650

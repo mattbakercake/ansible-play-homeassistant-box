@@ -1,5 +1,4 @@
 - name: fetch roles from git to local ansible instance
-  become: true
   ansible.builtin.git:
     repo: '{{ git_url }}/{{ role_name }}.git'
     dest: roles/{{ role_name }}
@@ -13,7 +12,6 @@
     loop_var: role_name
 
 - name: change ownership of roles to local ansible user
-  become: true
   file:
     path: "roles/{{ role_name }}" # this should be as same as `dest` above
     owner: "{{ lookup('env', 'USER') }}"
