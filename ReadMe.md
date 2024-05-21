@@ -1,6 +1,7 @@
 # Ansible play to provision Homeassistant server
 
 ## Notes
+* make sure ansible is up to date - community.docker at least v3.9.0 for docker_compose_v2 `ansible-galaxy collection list`
 * update inventory file to point to correct host for installation
 * determine device port zigbee coordinator is plugged into (see zigbee2mqtt docs) and update group_vars `zigbee_serial_device_port`
 * run the play `ansible-playbook run.yaml --ask-vault-pass`
