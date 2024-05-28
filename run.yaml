@@ -2,6 +2,7 @@
   hosts: homeassistant
 
   pre_tasks:
+  - import_tasks: tasks/vlan.yaml
   - import_tasks: tasks/fetchroles.yaml
 
   tasks:

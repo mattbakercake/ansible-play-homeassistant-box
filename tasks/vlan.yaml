@@ -1,0 +1,62 @@
+- name: Install vlan
+  become: yes
+  apt:
+    name:
+    - vlan
+    state: present
+
+# - name: Copy vlan config
+#   become: true
+#   template:
+#     src: templates/vlans
+#     dest: /etc/network/interfaces.d/vlans
+#     mode: 0755
+
+# - name: Set static IPs
+#   become: true
+#   template: 
+#     src: templates/dhcpd.conf
+#     dest: /etc/dhcpd.conf
+#     mode: 0755
+- name: Create master bridge
+  become: true
+  community.general.nmcli:
+    type: bridge
+    conn_name: br-v10
+    ip4: 10.0.10.1/24
+    state: present
+
+- name: Create VLAN 10
+  become: true
+  community.general.nmcli:
+    type: vlan
+    conn_name: eth0.10
+    slave_type: bridge
+    master: br-v10
+    vlandev: eth0
+    vlanid: 10
+    ip4: 
+    gw4: 
+    state: present
+
+- name: Brings VLAN up
+  become: true
+  command: 
+    cmd: "nmcli con up eth0.10"
+
+
+
+
+# - name: Async restart of networking.service 
+#   become: true
+#   shell: "sleep1 && systemctl restart networking"
+#   async: 100
+#   poll: 0
+
+# - name: wait_for ssh port access
+#   local_action:
+#     module: wait_for
+#       host={{ inventory_hostname }}
+#       port=22
+#       delay=10
+#     state: started
